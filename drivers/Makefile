@@ -6,6 +6,9 @@
 # Rewritten to use lists instead of if-statements.
 #
 
+obj-m				+= kernel/
+
+
 obj-y				+= irqchip/
 obj-y				+= bus/
 
