@@ -1,0 +1,244 @@
+安卓内核编译教程_3.0（2024-2-13）
+
+作者：情若相惜 ღ
+
+QQ群：290495721
+
+--------------------------------基础教程--------------------------------
+
+小米：
+
+https://github.com/MiCode/Xiaomi_Kernel_OpenSource/wiki/How-to-compile-kernel-standalone
+
+CSDN：
+
+http://t.csdnimg.cn/drV7p
+
+http://t.csdnimg.cn/wBEYZ
+
+http://t.csdnimg.cn/wvqFY
+
+http://t.csdnimg.cn/VxNxw
+
+http://t.csdnimg.cn/mPJrG
+
+-------------------------------电脑软件---------------------------------
+
+Ubuntu：22.4.3 LTS （可选）
+
+https://ubuntu.com/download/desktop
+
+VMware 17.5 Pro
+
+https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html
+
+注册码（可选）
+
+4A4RR-813DK-M81A9-4U35H-06KND
+
+NZ4RR-FTK5H-H81C1-Q30QH-1V2LA
+
+JU090-6039P-08409-8J0QH-2YR7F
+
+4Y09U-AJK97-089Z0-A3054-83KLA
+
+4C21U-2KK9Q-M8130-4V2QH-CF810
+
+MC60H-DWHD5-H80U9-6V85M-8280D
+
+--------------------------------内核源码--------------------------------
+
+内核源码（可选）
+
+谷歌：
+
+https://android.googlesource.com/kernel/common/+refs
+
+高通：
+
+https://git.codelinaro.org/clo/la/kernel?page=2
+
+小米：
+
+https://github.com/MiCode/Xiaomi_Kernel_OpenSource
+
+摩托罗拉：
+
+https://github.com/MotorolaMobilityLLC
+
+真我：
+
+https://github.com/realme-kernel-opensource
+
+华为
+
+https://consumer.huawei.com/en/opensource
+
+第三方：
+
+https://github.com/crdroidandroid
+
+https://github.com/LineageOS
+
+https://forum.xda-developers.com
+
+
+------------------------------交叉编译链-------------------------------
+
+
+#谷歌（自选）
+
+https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+
+https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9
+
+https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
+
+#高通（自选）
+
+https://git.codelinaro.org/clo/la/kernelplatform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+
+https://git.codelinaro.org/clo/la/kernelplatform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9
+
+https://git.codelinaro.org/clo/la/kernelplatform/prebuilts-master/clang/host/linux-x86
+
+#LLVM（自选）
+
+https://github.com/llvm/llvm-project/releases
+
+
+#LineageOS
+
+https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b
+
+https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9
+
+https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9
+
+#高通AOSP环境（推荐）
+
+高通AOSP源码环境，需要同步高通源码，需要良好的上网环境，以及至少200G内存，需要很长的时间下载。
+
+同步方法：http://t.csdnimg.cn/NomVp
+
+-----------------------------------换源----------------------------------
+
+#备份文件
+sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup
+
+#打开文本在开头加入下面代码并保存
+sudo gedit /etc/apt/sources.list
+
+
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
+# 预发布软件源，不建议启用
+# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
+
+
+----------------------------更新依赖包---------------------------------
+
+#读取依赖包列表
+sudo apt-get update
+
+#更新依赖包列表
+sudo apt-get upgrade
+
+------------------------------安装依赖包-------------------------------
+
+ubuntu（22.4.3）
+
+          sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev python3
+          sudo apt-get install -y pngcrush schedtool dpkg-dev liblz4-tool make optipng maven device-tree-compiler
+          sudo apt-get install -y libc6-dev-i386 lib32ncurses5-dev libx11-dev lib32z-dev libgl1-mesa-dev xsltproc
+          sudo apt-get install -y libxml2-utils libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools lzop flex tree
+          sudo apt-get install -y build-essential bc gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libssl-dev libfl-dev
+          sudo apt-get install -y pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl libxml-simple-perl
+          sudo apt-get install -y zip unzip tar gzip bzip2 rar unrar llvm g++-multilib bison gperf zlib1g-dev automake
+
+
+ubuntu (18.4.6)
+
+sudo apt-get install git ccache automake flex lzop bison \
+gperf build-essential zip curl zlib1g-dev zlib1g-dev:i386 \
+g++-multilib python-networkx libxml2-utils bzip2 libbz2-dev \
+libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush \
+schedtool dpkg-dev liblz4-tool make optipng maven libssl-dev \
+pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl \
+libxml-simple-perl bc libc6-dev-i386 lib32ncurses5-dev \
+x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev xsltproc unzip
+
+--------------------------------内核配置--------------------------------
+
+查看内核源码根目录 arch/arm64/configs 或者 arch/arm64/configs/vendor 有没有对应你手机代号的 _defconfig 文件
+
+比如我的是小米 mix4，对应代号为 odin 那么其中一个文件夹下应该会有一个 odin_defconfig 的文件。
+
+如果没有，就提取自己手机根目录里的文件
+
+/proc/config.gz
+
+将 config.gz 解压后，重命名为 xx_defconfig 放入内核源码的 arch/arm64/configs 或者 arch/arm64/configs/vendor 文件下。
+
+--------------------------------编译部分--------------------------------
+
+
+建议脚本完成！
+
+
+--------------------------------打包部分--------------------------------
+
+#AnyKernel3
+
+https://github.com/osm0sis/AnyKernel3
+
+需要修改 anykernel.sh 这个脚本
+
+kernel.string=KernelName by YourName @ xda-developers
+do.devicecheck=1
+do.modules=1
+do.systemless=1
+do.cleanup=1
+do.cleanuponabort=0
+device.name1=maguro
+device.name2=toro
+device.name3=toroplus
+device.name4=tuna
+supported.versions=6.0 - 7.1.2
+supported.patchlevels=2019-07 -
+supported.vendorpatchlevels=2013-07
+
+block=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;
+is_slot_device=0;
+ramdisk_compression=auto;
+patch_vbmeta_flag=auto;
+
+#手机参数等验证，如果参数不对就刷入不了。
+do.devicecheck=1    #改成0为关闭，
+
+#对应的是这个支持验证多个参数
+device.name1=maguro
+device.name2=toro
+device.name3=toroplus
+device.name4=tuna
+
+
+block=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;
+
+is_slot_device=0;
+
+这两个改为
+
+block=auto;
+is_slot_device=auto;
+
+
+然后将编译出来的文件放到压缩包的根目录即可。
